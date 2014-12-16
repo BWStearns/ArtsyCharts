@@ -69,6 +69,13 @@ DATABASES = {
     }
 }
 
+# For DjangoExtensions
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
