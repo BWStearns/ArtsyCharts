@@ -25,7 +25,7 @@ class ArtCollectionSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ArtCollection
-        fields = ('owner', 'title', 'pieces')
+        fields = ('owner', 'title', 'description', 'pieces')
 
 
 # ViewSets define the view behavior.

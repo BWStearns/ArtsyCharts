@@ -102,6 +102,7 @@ class Authorship(models.Model):
     class Meta:
         verbose_name = "Authorship"
         verbose_name_plural = "Authorships"
+        auto_created=True
 
     def __str__(self):
         return "{0}, by {1}".format(self.piece.title, self.author.name)
@@ -111,6 +112,7 @@ class CollectionMembership(models.Model):
 
     piece = models.ForeignKey(ArtPiece)
     collection = models.ForeignKey(ArtCollection)
+    auto_created=True
 
     class Meta:
         verbose_name = "CollectionMembership"
