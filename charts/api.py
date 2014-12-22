@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 # External
 from rest_framework import routers, serializers, viewsets
 # Internal
-from charts.models import ArtCollection, ArtPiece
+from charts.models import ArtCollection, ArtPiece, Artist, Medium
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -21,7 +21,7 @@ class UserViewSet(viewsets.ModelViewSet):
 #################
 class ArtCollectionSerializer(serializers.HyperlinkedModelSerializer):
 
-    pieces = serializers.StringRelatedField(many=True)
+    pieces = serializers.RelatedField(many=True)
 
     class Meta:
         model = ArtCollection
@@ -34,6 +34,40 @@ class ArtCollectionViewSet(viewsets.ModelViewSet):
     serializer_class = ArtCollectionSerializer
 
 #################
+# ARTISTS
+#################
+class ArtistSerializer(serializers.HyperlinkedModelSerializer):
+
+    pieces = serializers.RelatedField(many=True)
+
+    class Meta:
+        model = Artist
+        fields = ('name', 'birth', 'death', 'pieces')
+
+
+# ViewSets define the view behavior.
+class ArtistViewSet(viewsets.ModelViewSet):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+
+
+#################
+# MEDIA
+#################
+class MediumSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Medium
+        fields = ('name',)
+
+
+# ViewSets define the view behavior.
+class MediumViewSet(viewsets.ModelViewSet):
+    queryset = Medium.objects.all()
+    serializer_class = MediumSerializer
+
+
+#################
 # PIECES
 #################
 
@@ -44,6 +78,7 @@ class ArtPieceSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'id',
             'title',
+            'medium',
             'image_url',
             'thumb_url',
             'artists',
@@ -66,3 +101,5 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'art_collections', ArtCollectionViewSet)
 router.register(r'art_pieces', ArtPieceViewSet)
+router.register(r'artists', ArtistViewSet)
+router.register(r'media', MediumViewSet)
