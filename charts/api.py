@@ -84,6 +84,7 @@ class ArtPieceSerializer(serializers.HyperlinkedModelSerializer):
             'artists',
             'collections',
             'primary_artist',
+            'price',
         )
 
 

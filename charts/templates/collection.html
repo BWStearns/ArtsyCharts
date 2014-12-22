@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+    {{ collection.title }}
+{% endblock %}
+
+{% block content %}
+
+    {% for piece in pieces %}
+        
+        <div class='work' id="{{ piece.id }}">
+            <div class='work_blurb'>
+                <div class='artist_name blurb_component'>
+                    {{ piece.primary_artist.name }}
+                </div>
+                <div class='piece_title blurb_component'>
+                    <em>{{ piece.title }}</em>, {{ piece.year }}
+                </div>
+                <div class='medium blurb_component'>
+                    {{ piece.medium.name }}
+                </div>
+                <div class='dimension blurb_component'>
+                    {{ piece.dimension_text }}
+                </div>
+            </div>
+            <div class='piece_img' id="{{ piece.id }}_img">
+                <img src='{{ piece.thumb_url }}'/>
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

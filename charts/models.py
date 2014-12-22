@@ -41,6 +41,12 @@ class ArtPiece(models.Model):
     image_url = models.URLField()
     thumb_url = models.URLField()
 
+    # Dimensions (in inches for now....)
+    width = models.DecimalField(max_digits=10, decimal_places=3, null=True)
+    length = models.DecimalField(max_digits=10, decimal_places=3, null=True)
+    height = models.DecimalField(max_digits=10, decimal_places=3, null=True)
+    price = models.DecimalField(null=True, max_digits=14, decimal_places=2)
+
     artists = models.ManyToManyField(
         Artist,
         null=True,
@@ -112,11 +118,11 @@ class CollectionMembership(models.Model):
 
     piece = models.ForeignKey(ArtPiece)
     collection = models.ForeignKey(ArtCollection)
-    auto_created=True
 
     class Meta:
         verbose_name = "CollectionMembership"
         verbose_name_plural = "CollectionMemberships"
+        auto_created=True
 
     def __str__(self):
         return "{0}, in {1}".format(self.piece.title, self.collection.name)

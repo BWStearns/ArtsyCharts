@@ -30,6 +30,9 @@ class Migration(migrations.Migration):
             name='Artist',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(default=b'Unknown', max_length=100)),
+                ('birth', models.DateField(null=True)),
+                ('death', models.DateField(null=True)),
             ],
             options={
                 'verbose_name': 'Artist',
@@ -44,23 +47,14 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=200)),
                 ('image_url', models.URLField()),
                 ('thumb_url', models.URLField()),
+                ('width', models.DecimalField(null=True, max_digits=10, decimal_places=3)),
+                ('length', models.DecimalField(null=True, max_digits=10, decimal_places=3)),
+                ('height', models.DecimalField(null=True, max_digits=10, decimal_places=3)),
+                ('artists', models.ManyToManyField(to='charts.Artist', null=True)),
             ],
             options={
                 'verbose_name': 'ArtPiece',
                 'verbose_name_plural': 'ArtPieces',
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='Authorship',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('author', models.ForeignKey(to='charts.Artist')),
-                ('piece', models.ForeignKey(to='charts.ArtPiece')),
-            ],
-            options={
-                'verbose_name': 'Authorship',
-                'verbose_name_plural': 'Authorships',
             },
             bases=(models.Model,),
         ),
@@ -77,11 +71,17 @@ class Migration(migrations.Migration):
             },
             bases=(models.Model,),
         ),
-        migrations.AddField(
-            model_name='artpiece',
-            name='artists',
-            field=models.ManyToManyField(to='charts.Artist', null=True, through='charts.Authorship'),
-            preserve_default=True,
+        migrations.CreateModel(
+            name='Medium',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=50)),
+            ],
+            options={
+                'verbose_name': 'Medium',
+                'verbose_name_plural': 'Media',
+            },
+            bases=(models.Model,),
         ),
         migrations.AddField(
             model_name='artpiece',
@@ -91,8 +91,20 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='artpiece',
+            name='medium',
+            field=models.ForeignKey(to='charts.Medium'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='artpiece',
             name='primary_artist',
-            field=models.ForeignKey(related_name='pieces_as_primary', to='charts.Artist', null=True),
+            field=models.ForeignKey(related_name=b'pieces_as_primary', to='charts.Artist', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='artist',
+            name='pieces',
+            field=models.ManyToManyField(to='charts.ArtPiece'),
             preserve_default=True,
         ),
         migrations.AddField(
